@@ -1,18 +1,29 @@
 package nl.inholland.AFirstApi.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Car {
+    @Id
     private long id;
-    private String brand;
+    @ManyToOne
+    private Brand brand;
     private String model;
     private double price;
     private int year;
 
-    public Car(long id, String brand, String model, double price, int year) {
+    public Car(long id, Brand brand, String model, double price, int year) {
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.price = price;
         this.year = year;
+    }
+
+    public Car() {
+
     }
 
     public long getId() {
@@ -23,11 +34,11 @@ public class Car {
         this.id = id;
     }
 
-    public String getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 

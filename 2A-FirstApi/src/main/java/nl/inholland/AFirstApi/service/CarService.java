@@ -1,6 +1,10 @@
 package nl.inholland.AFirstApi.service;
 
+import nl.inholland.AFirstApi.dao.BrandRepository;
+import nl.inholland.AFirstApi.dao.CarRepository;
+import nl.inholland.AFirstApi.model.Brand;
 import nl.inholland.AFirstApi.model.Car;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,20 +13,22 @@ import java.util.List;
 @Service
 public class CarService {
 
-    private List<Car> cars = new ArrayList<Car>();
+    @Autowired
+    private CarRepository carRepository;
+    @Autowired
+    private BrandRepository brandRepository;
 
     public CarService() {
-        cars.add(new Car(1, "Ferrari", "F40", 200000, 1998));
-        cars.add(new Car(2, "Lamborghini", "Gallardo", 690000, 2000));
-        cars.add(new Car(3, "Renault", "Clio", 24000, 2008));
     }
 
     public List<Car> getAllCars() {
-        return cars;
+
+        return (List<Car>) carRepository.findAll();
     }
 
-    public Car addCar(Car car) {
-        cars.add(car);
-        return car;
+    public void addCar(Car car) {
+        Brand brand = brandRepository.findBrandByName(car.getBrand().getBrandName());
+        car.setBrand(brand);
+        carRepository.save(car);
     }
 }

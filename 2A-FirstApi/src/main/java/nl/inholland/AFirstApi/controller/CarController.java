@@ -3,6 +3,7 @@ package nl.inholland.AFirstApi.controller;
 import nl.inholland.AFirstApi.model.Car;
 import nl.inholland.AFirstApi.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,13 +13,13 @@ import java.util.List;
 
 @RequestMapping("/cars")
 @RestController
-public class DemoController {
+public class CarController {
 
-    public DemoController(CarService carService) {
+    public CarController(CarService carService) {
         this.carService = carService;
     }
 
-    CarService carService;
+    private CarService carService;
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test() {
@@ -31,8 +32,9 @@ public class DemoController {
     }
 
     @PostMapping
-    public Car addCar(@RequestBody Car car) {
-        return carService.addCar(car);
+    public ResponseEntity addCar(@RequestBody Car car) {
+        carService.addCar(car);
+        return ResponseEntity.status(HttpStatus.CREATED).body(car.getId());
     }
 
     @RequestMapping(value = "/cars", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
